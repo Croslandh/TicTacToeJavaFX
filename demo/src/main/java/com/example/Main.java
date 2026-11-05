@@ -1,14 +1,11 @@
 package com.example;
 
-/** Application entry point for the console Tic-Tac-Toe game. */
+import javafx.application.Application;
+
+/** Application entry point for the JavaFX Tic-Tac-Toe game. */
 public class Main {
-    /** Starts a new console game. */
+    /** Launches the JavaFX game window. */
     public static void main(String[] args) {
-
-        TicTacToeConsole game = new TicTacToeConsole();
-        game.startGame();
-
-
-
+        Application.launch(App.class, args);
     }
 }
