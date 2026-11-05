@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 
  * A player that chooses randomly from the currently available cells. 
  */
 public class CpuPlayer extends Player {
+    private static final AtomicInteger NEXT_PLAYER_NUMBER = new AtomicInteger(1);
+
     private final Random random;
-    private String name = "CPU #1";
+    private String name;
 
     /**
      * Creates a CPU player with a randomly seeded move generator.
@@ -39,6 +42,7 @@ public class CpuPlayer extends Player {
     public CpuPlayer(char marker, Random random) {
         super(marker);
         this.random = Objects.requireNonNull(random, "random");
+        this.name = "CPU #" + NEXT_PLAYER_NUMBER.getAndIncrement();
     }
     
     /** Returns this CPU player's name. */

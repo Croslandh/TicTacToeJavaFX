@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 /** Unit tests for human and CPU player move behavior. */
@@ -17,8 +18,8 @@ class PlayerTest {
         HumanPlayer human = new HumanPlayer('X', new Scanner(""));
         CpuPlayer cpu = new CpuPlayer('O');
 
-        assertEquals("Player #1", human.getName());
-        assertEquals("CPU #1", cpu.getName());
+        assertTrue(human.getName().matches("Player #\\d+"));
+        assertTrue(cpu.getName().matches("CPU #\\d+"));
     }
 
     /** Verifies two human players receive sequential default names. */
@@ -27,8 +28,7 @@ class PlayerTest {
         HumanPlayer first = new HumanPlayer('X', new Scanner(""));
         HumanPlayer second = new HumanPlayer('O', new Scanner(""));
 
-        assertEquals("Player #1", first.getName());
-        assertEquals("Player #2", second.getName());
+        assertSequentialDefaultNames("Player #", first.getName(), second.getName());
     }
 
     /** Verifies two CPU players receive sequential default names. */
@@ -37,8 +37,7 @@ class PlayerTest {
         CpuPlayer first = new CpuPlayer('X');
         CpuPlayer second = new CpuPlayer('O');
 
-        assertEquals("CPU #1", first.getName());
-        assertEquals("CPU #2", second.getName());
+        assertSequentialDefaultNames("CPU #", first.getName(), second.getName());
     }
 
     /** Verifies both player types return a name after it has been changed. */
@@ -137,5 +136,12 @@ class PlayerTest {
             }
         }
         return count;
+    }
+
+    /** Verifies two generated names use consecutive numbers after the same prefix. */
+    private void assertSequentialDefaultNames(String prefix, String firstName, String secondName) {
+        assertTrue(firstName.matches(Pattern.quote(prefix) + "\\d+"));
+        int firstNumber = Integer.parseInt(firstName.substring(prefix.length()));
+        assertEquals(prefix + (firstNumber + 1), secondName);
     }
 }
