@@ -63,6 +63,15 @@
     -fx-text-fill: #e27755;
 }
 
+/* Distinguish the three buttons that form the winning line. */
+.winning-cell {
+    -fx-background-color: #83d6c5;
+    -fx-border-color: #f4f7fb;
+    -fx-border-width: 4px;
+    -fx-border-radius: 17px;
+    -fx-effect: dropshadow(gaussian, rgba(131, 214, 197, 0.8), 18, 0.35, 0, 0);
+}
+
 .hint {
     -fx-text-fill: #9eafc2;
     -fx-font-size: 13px;

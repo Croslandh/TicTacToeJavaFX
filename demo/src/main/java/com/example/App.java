@@ -139,6 +139,7 @@ public class App extends Application {
         if (board.checkWin()) {
             status.setText(playerName + " (" + marker + ") wins!");
             gameOver = true;
+            highlightWinningCells(marker);
             setAllCellsDisabled(true);
             return true;
         }
@@ -149,6 +150,45 @@ public class App extends Application {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Adds a style class to the three cells in the winner's completed line.
+     * Board.checkWin remains responsible for deciding whether the game was won.
+     */
+    private void highlightWinningCells(char marker) {
+        for (int index = 0; index < 3; index++) {
+            if (board.getCell(index, 0) == marker
+                    && board.getCell(index, 1) == marker
+                    && board.getCell(index, 2) == marker) {
+                addWinningStyle(index, 0, index, 1, index, 2);
+                return;
+            }
+            if (board.getCell(0, index) == marker
+                    && board.getCell(1, index) == marker
+                    && board.getCell(2, index) == marker) {
+                addWinningStyle(0, index, 1, index, 2, index);
+                return;
+            }
+        }
+
+        if (board.getCell(0, 0) == marker
+                && board.getCell(1, 1) == marker
+                && board.getCell(2, 2) == marker) {
+            addWinningStyle(0, 0, 1, 1, 2, 2);
+        } else if (board.getCell(0, 2) == marker
+                && board.getCell(1, 1) == marker
+                && board.getCell(2, 0) == marker) {
+            addWinningStyle(0, 2, 1, 1, 2, 0);
+        }
+    }
+
+    /** Applies the winning-line style to each cell in a completed triple. */
+    private void addWinningStyle(int row1, int column1, int row2, int column2,
+            int row3, int column3) {
+        cells[row1][column1].getStyleClass().add("winning-cell");
+        cells[row2][column2].getStyleClass().add("winning-cell");
+        cells[row3][column3].getStyleClass().add("winning-cell");
     }
 
     /** Displays the latest board markers and disables occupied squares. */
@@ -164,6 +204,8 @@ public class App extends Application {
     private void updateCell(int row, int column) {
         char marker = board.getCell(row, column);
         Button cell = cells[row][column];
+        // Clearing the style here also removes old highlights when restarting.
+        cell.getStyleClass().remove("winning-cell");
         if (marker == ' ') {
             cell.setText("");
             cell.setDisable(false);
