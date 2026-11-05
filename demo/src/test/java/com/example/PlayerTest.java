@@ -11,6 +11,51 @@ import org.junit.jupiter.api.Test;
 
 /** Unit tests for human and CPU player move behavior. */
 class PlayerTest {
+    /** Verifies new human and CPU players receive their specified default names. */
+    @Test
+    void playersHaveDefaultNames() {
+        HumanPlayer human = new HumanPlayer('X', new Scanner(""));
+        CpuPlayer cpu = new CpuPlayer('O');
+
+        assertEquals("Player #1", human.getName());
+        assertEquals("CPU #1", cpu.getName());
+    }
+
+    /** Verifies both player types return a name after it has been changed. */
+    @Test
+    void playersCanHaveTheirNamesChanged() {
+        HumanPlayer human = new HumanPlayer('X', new Scanner(""));
+        CpuPlayer cpu = new CpuPlayer('O');
+
+        human.setName("Taylor");
+        cpu.setName("Computer opponent");
+
+        assertEquals("Taylor", human.getName());
+        assertEquals("Computer opponent", cpu.getName());
+    }
+
+    /** Verifies neither player accepts a null name. */
+    @Test
+    void playersRejectNullNames() {
+        HumanPlayer human = new HumanPlayer('X', new Scanner(""));
+        CpuPlayer cpu = new CpuPlayer('O');
+
+        assertThrows(NullPointerException.class, () -> human.setName(null));
+        assertThrows(NullPointerException.class, () -> cpu.setName(null));
+    }
+
+    /** Verifies neither player accepts empty or whitespace-only names. */
+    @Test
+    void playersRejectEmptyAndWhitespaceOnlyNames() {
+        HumanPlayer human = new HumanPlayer('X', new Scanner(""));
+        CpuPlayer cpu = new CpuPlayer('O');
+
+        assertThrows(IllegalArgumentException.class, () -> human.setName(""));
+        assertThrows(IllegalArgumentException.class, () -> human.setName(" \t\n"));
+        assertThrows(IllegalArgumentException.class, () -> cpu.setName(""));
+        assertThrows(IllegalArgumentException.class, () -> cpu.setName(" \t\n"));
+    }
+
     /** Verifies a human can place a marker at valid coordinates. */
     @Test
     void humanCanPlaceAMoveFromSelectedCoordinates() {
